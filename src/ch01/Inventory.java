@@ -30,14 +30,14 @@ public class Inventory {
         return guitar;
     }
 
-    public List<Guitar> search(Guitar searchGuitar) {
+    public List<Guitar> search(GuitarSpec searchSpec) {
               List<Guitar> matchingGuitars = guitars.stream()
                 .filter(g ->
-                        searchGuitar.getBuilder().equals(g.getBuilder())
-                                && searchGuitar.getModel().equalsIgnoreCase(g.getModel())
-                                && searchGuitar.getType().equals(g.getType())
-                                && searchGuitar.getBackWood().equals(g.getBackWood())
-                                && searchGuitar.getTopWood().equals(g.getTopWood())
+                        searchSpec.getBuilder().equals(g.getSpec().getBuilder())
+                                && searchSpec.getModel().equalsIgnoreCase(g.getSpec().getModel())
+                                && searchSpec.getType().equals(g.getSpec().getType())
+                                && searchSpec.getBackWood().equals(g.getSpec().getBackWood())
+                                && searchSpec.getTopWood().equals(g.getSpec().getTopWood())
                 ).collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
         return matchingGuitars;
 
