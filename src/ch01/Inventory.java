@@ -11,9 +11,8 @@ public class Inventory {
         guitars = new LinkedList<>();
     }
 
-    public void addGuitar(String serialNumber, double price, Builder builder, String model,
-                          Type type, Wood backWood, Wood topWood) {
-        Guitar guitar = new Guitar(serialNumber, price, builder, model, type, backWood, topWood);
+    public void addGuitar(String serialNumber, double price, GuitarSpec spec) {
+        Guitar guitar = new Guitar(serialNumber, price,spec);
         guitars.add(guitar);
     }
 
@@ -31,14 +30,9 @@ public class Inventory {
     }
 
     public List<Guitar> search(GuitarSpec searchSpec) {
-              List<Guitar> matchingGuitars = guitars.stream()
-                .filter(g ->
-                        searchSpec.getBuilder().equals(g.getSpec().getBuilder())
-                                && searchSpec.getModel().equalsIgnoreCase(g.getSpec().getModel())
-                                && searchSpec.getType().equals(g.getSpec().getType())
-                                && searchSpec.getBackWood().equals(g.getSpec().getBackWood())
-                                && searchSpec.getTopWood().equals(g.getSpec().getTopWood())
-                ).collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
+        List<Guitar> matchingGuitars = guitars.stream()
+                .filter(g -> g.getSpec().matches(searchSpec))
+                .collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
         return matchingGuitars;
 
     }
