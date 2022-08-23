@@ -1,13 +1,16 @@
 package dogDoor;
 
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class DogDoor {
     private boolean open;
+    private final LinkedList<Bark> allowedBarks;
 
     public DogDoor() {
         this.open = false;
+        this.allowedBarks = new LinkedList<>();
     }
 
     public void open() {
@@ -31,5 +34,13 @@ public class DogDoor {
 
     public boolean isOpen() {
         return open;
+    }
+
+    public void addAllowedBark(Bark bark) {
+        allowedBarks.add(bark);
+    }
+
+    public LinkedList<Bark> getAllowedBarks() {
+        return allowedBarks;
     }
 }
