@@ -5,35 +5,51 @@ import java.util.List;
 import java.util.Optional;
 
 public class Inventory {
-    private final List<Guitar> guitars;
+    private final List<Instrument> inventory;
 
     public Inventory() {
-        guitars = new LinkedList<>();
+        inventory = new LinkedList<>();
     }
 
-    public void addGuitar(String serialNumber, double price, GuitarSpec spec) {
-        Guitar guitar = new Guitar(serialNumber, price,spec);
-        guitars.add(guitar);
+    public void addInstrument(String serialNumber, double price, InstrumentSpec spec) {
+        Instrument instrument = null;
+        if (spec instanceof GuitarSpec) {
+            instrument = new Guitar(serialNumber, price, (GuitarSpec) spec);
+        } else if (spec instanceof MandolinSpec) {
+            instrument = new Mandolin(serialNumber, price, (MandolinSpec) spec);
+        }
+        inventory.add(instrument);
     }
 
-    public Guitar getGuitar(String serialNumber) {
-        Optional<Guitar> optional = guitars.stream()
+    public Instrument getInstrument(String serialNumber) {
+        Optional<Instrument> optional = inventory.stream()
                 .filter(g -> serialNumber.equals(g.getSerialNumber()))
                 .findFirst();
 
-        Guitar guitar = null;
+        Instrument instrument = null;
         if (optional.isPresent()) {//Check whether optional has element you are looking for
-            guitar = optional.get();//get it from optional
+            instrument = optional.get();//get it from optional
         }
 
-        return guitar;
+        return instrument;
     }
 
     public List<Guitar> search(GuitarSpec searchSpec) {
-        List<Guitar> matchingGuitars = guitars.stream()
-                .filter(g -> g.getSpec().matches(searchSpec))
+        List<Guitar> matchingGuitars = inventory.stream()
+                .filter(instrument -> instrument instanceof Guitar)
+                .map(instrument -> (Guitar) instrument)
+                .filter(instrument -> instrument.getSpec().matches(searchSpec))
                 .collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
-        return matchingGuitars;
 
+        return matchingGuitars;
+    }
+
+    public List<Mandolin> search(MandolinSpec searchSpec) {
+        List<Mandolin> matchingMandolins = inventory.stream()
+                .filter(instrument -> instrument instanceof Mandolin)
+                .map(instrument -> (Mandolin) instrument)
+                .filter(instrument -> instrument.getSpec().matches(searchSpec))
+                .collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
+        return matchingMandolins;
     }
 }
