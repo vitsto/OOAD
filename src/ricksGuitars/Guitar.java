@@ -1,4 +1,4 @@
-package ch01;
+package ricksGuitars;
 
 public class Guitar {
     private final String serialNumber;

@@ -1,4 +1,4 @@
-package ch01;
+package ricksGuitars;
 
 public class GuitarSpec {
     private final String model;

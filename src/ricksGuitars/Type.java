@@ -1,4 +1,4 @@
-package ch01;
+package ricksGuitars;
 
 public enum Type {
     ACOUSTIC, ELECTRIC;
